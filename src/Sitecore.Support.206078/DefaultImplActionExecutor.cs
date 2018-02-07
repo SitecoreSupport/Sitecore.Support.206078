@@ -8,6 +8,7 @@ using Sitecore.WFFM.Abstractions.Data;
 using Sitecore.WFFM.Abstractions.Shared;
 using Sitecore.Form.Core.Utility;
 using Sitecore.Form.Core.Pipelines.FormSubmit;
+using Sitecore.Form.Core.Data;
 
 namespace Sitecore.Support.Forms.Core.Dependencies
 {
@@ -81,10 +82,8 @@ namespace Sitecore.Support.Forms.Core.Dependencies
           {
             this.analyticsTracker.TriggerEvent(IDs.FormCheckActionErrorId, "Form Check Action Error", formID, checkFailedArgs.ErrorMessage, actionDefinition.GetTitle());
           }
-          throw new Exception(checkFailedArgs.ErrorMessage)
-          {
-            Source = ex.Source
-          };
+          throw new FormSubmitException(checkFailedArgs.ErrorMessage, actionDefinition.ActionID, ex);
+          
         }
         throw;
       }
