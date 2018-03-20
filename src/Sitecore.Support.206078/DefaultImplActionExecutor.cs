@@ -82,8 +82,15 @@ namespace Sitecore.Support.Forms.Core.Dependencies
           {
             this.analyticsTracker.TriggerEvent(IDs.FormCheckActionErrorId, "Form Check Action Error", formID, checkFailedArgs.ErrorMessage, actionDefinition.GetTitle());
           }
-          throw new FormSubmitException(checkFailedArgs.ErrorMessage, actionDefinition.ActionID, ex);
-          
+                    ExecuteResult.Failure fail = new ExecuteResult.Failure
+                    {
+                        ErrorMessage = checkFailedArgs.ErrorMessage,
+                        FailedAction = actionDefinition.ActionID,
+                        IsCustom = true,
+                        StackTrace = string.Empty
+                    };
+           throw new FormSubmitException(new ExecuteResult.Failure[] { fail});
+                        
         }
         throw;
       }
